@@ -6,9 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Learn Javascript</title>
   <link rel="stylesheet" href="/style">
+  <link rel="shortcut icon" type="image/png" href="/Learn.png">
 </head>
 <body>
-   
+  <h2 class="theScore"><a href="">View Highscore</a></h2 class="clock">Time:</h2>
+
+  <h1>Coding Quiz</h1>
+  <h3>Try to answer the following code-related questions wthin the time limit.
+    Keep in mind that incorrect answers will penelize your score and your time by 10 seconds.
+  </h3>
+
+ <button id="theStart" class="btn-5">Start Quiz</button>
 
   <script src="/script"></script>
 </body>
