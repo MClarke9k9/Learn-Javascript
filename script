@@ -1,1 +1,85 @@
-document.body
+var currentQuestion=0;
+var currentScore=0;
+var currentTime=45;
+var questionContainer=document.getElementById("container");
+var interval;
+​
+​
+questionContainer.addEventListener("click",function(event) {
+    if(event.target.matches("li")) {
+        var answer=event.target.innerText;
+​
+        var question=questions[currentQuestion];
+​
+        if(answer===question.answer) {
+            currentScore++;
+        } else {
+            currentTime=currentTime-5;
+        }
+        currentQuestion++;
+        if(currentQuestion>=questions.length) {
+            finishQuiz();
+        } else {
+            showCurrentQuestion();
+        }       
+        
+    }
+});
+​
+function showHighScores() {
+    var highestScore
+}
+​
+function finishQuiz() {
+    clearInterval(interval);
+    var highestScore=localStorage.getItem("highscore");
+
+    if (!highestScore || currentScore > highestScore) {
+        var userName=prompt("Whats your name?");
+        localStorage.setItem("highScore",currentScore);
+        localStorage.setItem("userName",userName);
+    }
+}
+​
+var questions=[
+    {
+        question:"What is your name?",
+        options:["john doe","jack sparrow"],
+        answer:"john doe"
+    },
+    {
+        question:"What is your lastname?",
+        options:["something","something else"],
+        answer:"something"
+    }
+];
+​
+​
+​
+function showCurrentQuestion() {
+    var question=questions[currentQuestion];
+    questionContainer.innerHTML="";
+​
+    var questionTitle=document.createElement("h1");
+    questionTitle.innerText=question.question;
+    questionContainer.appendChild(questionTitle);
+​
+    var optionsList=document.createElement("ul");
+​
+    for(var i=0;i<question.options.length;i++) {
+        var questionLi=document.createElement("li");
+        questionLi.innerText=question.options[i];
+        optionsList.appendChild(questionLi);
+​
+    }
+    questionContainer.appendChild(optionsList);
+}
+​
+function startQuiz() {
+    showCurrentQuestion();
+    
+}
+
+
+
+
