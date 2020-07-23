@@ -1,3 +1,9 @@
+document.getElementById("theStart").addEventListener("click", function(event){
+    startQuiz();
+})
+
+
+
 var currentQuestion=0;
 var currentScore=0;
 var currentTime=45;
