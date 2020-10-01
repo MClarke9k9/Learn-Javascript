@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" type="image/png" href="/Users/Power/Learn-Javascript/Learn.png">
+    <title>Learn Javascript</title>
+    <style>
+        body {
+            background-color: black;
+            /* font parameters */
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1em;
+            /* added padding to prevent navbar overlap. (100 based on browser inpector of size) */
+            padding-top: 90px;
+        }
+        
+        button {
+            margin: 1em;
+        }
+        
+        .navbar {
+            background-color: yellow;
+            color: black;
+            /* pulls everything down to push up against bottom border */
+            padding-bottom: 0;
+            /* allows ??? to control the horizontal position */
+            padding-left: 0;
+            /* creates solid line for the bottom border  */
+            border-bottom: solid;
+            border-bottom-color: blue;
+            width: 100%;
+        }
+        
+        #navbar-title {
+            padding: 15px;
+            font-size: 30px;
+            color: black!important;
+            /* TODO can we do this without the !important */
+        }
+        /* container for nav header */
+        
+        .container-fluid {
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            /* padding-left: 0%; */
+            /* padding-right: 0%; */
+            /* color: #777 !important; */
+        }
+        /* Change the color of links on hover */
+        
+        .nav-link:hover {
+            /* question how do i impact these values without using important */
+            /* background-color: #4Cabc2 !important; */
+            background-color: yellowgreen;
+            ;
+            /* color: #fff !important; */
+            color: #666;
+        }
+        
+        #details {
+            /* background-color: #73919b;   */
+            background-color: yellow;
+            /* provides spacing between the top and bottom nav bars and the content */
+            margin-top: 20px;
+            margin-bottom: 80px;
+            /* provide spaceing around the text */
+            padding: 40px;
+        }
+        
+        li {
+            height: 50px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 5px;
+            background-color: black;
+            color: #fff;
+            font-size: 1.5em;
+            line-height: 1.5;
+            list-style-type: none;
+        }
+        
+        li:hover {
+            background-color: #9e9268;
+        }
+        
+        #answer-image {
+            float: left;
+            padding-right: 1em;
+            padding-top: 0.25em;
+        }
+        
+        .footer {
+            /* set text properties */
+            background-color: yellow;
+            /* sets height of footer*/
+            height: 10%;
+            /* sets properties for footer border*/
+            border-top: solid;
+            border-top-color: blue;
+            border-top-width: 8px;
+        }
+        
+        .footer-text {
+            /* forces text across the entire screen so it has a center */
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            color: black;
+        }
+        /* media query for screen size to be applied to center text to switch at same time as navbar */
+        
+        @media (max-width: 768px) {
+            .container-fluid {
+                /* removes paddding on either side */
+                padding-left: 0;
+                padding-right: 0;
+            }
+            /* removes verticle lines between text */
+            li {
+                border-right: none;
+            }
+            /* collapses space between menu options when they stack vertically*/
+            .nav-link {
+                padding: 1px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Start header -->
+    <nav class="navbar navbar-expand-md fixed-top">
+        <div class="container-fluid">
+            <div id="highscore" class="nav-item nav-link">View High Scores</div>
+            <h1 id="navbar-title">Learn Javascript Fast!</h1>
+            <table id=timers style="visibility: hidden;">
+                <tr>
+                    <td>Time left in Game: </td>
+                    <td><span id="gameTimer" class="nav-item"></span></td>
+                </tr>
+                <tr>
+                    <td>Time left for Question:</td>
+                    <td><span id="quesTimer" class="nav-item"></span></td>
+                </tr>
+            </table>
+        </div>
+        </div>
+    </nav>
+    <!-- end header -->
+    <!-- start Content -->
+    <div class="container-fluid">
+        <!-- need a place for the intro instructions and quiz -->
+        <section id="details"></section>
+    </div>
+    <!-- End Content -->
+    <!-- Start Footer -->
+    <nav class="navbar fixed-bottom footer">
+        <div class="footer-text">An original Website by Mark Clarke</div>
+    </nav>
+    <!-- End Footer -->
+    <!-- read in file containing questions for quiz -->
+    <script>
+        var jsQuestions = [{
+            title: "Commonly used data types DO NOT include:",
+            choices: ["strings", "booleans", "alerts", "numbers"],
+            answer: "alerts"
+        }, {
+            title: "The condition in an if / else statement is enclosed within ____.",
+            choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
+            answer: "parentheses"
+        }, {
+            title: "Is JavaScript fun to work with?",
+            choices: ["No", "Sometimes", "What is Javascript", "Not just yes, but HELL YES!"],
+            answer: "Not just yes, but HELL YES!"
+        }, {
+            title: "DOM is an abreviation for ____",
+            choices: ["Data Object Mode", "Dumb Old Man", "Document Object Model", "Dutle Opo Mipsy"],
+            answer: "Document Object Model"
+        }, {
+            title: "JavaScript is Textile Mark Up (TML) version of Java?",
+            choices: ["True", "False"],
+            answer: "False"
+        }, {
+            title: "JavaScript is strongly typed language",
+            choices: ["True", "False"],
+            answer: "False"
+        }];
+    </script>
+    <!-- read in javascript file -->
+    <script>
+        // pull in page objects
+        let highscoreDiv = document.querySelector("#highscore");
+        let gameTimerEl = document.querySelector("#gameTimer");
+        let quesTimerEl = document.querySelector("#quesTimer");
+        let mainEl = document.querySelector("#details");
+        let timerTab = document.querySelector("#timers");
+
+
+        // let questionEl = document.querySelector("#question")
+        // let answersListEl = document.querySelector("#answer-list")
+
+        // set global variables - how do we move these into localized
+        var test = false;
+        var score = 0;
+        var quiz = {};
+        var quizType = "";
+
+        var gameDuration = 0;
+        var gameSecElapsed = 0;
+        var gameInterval;
+
+        var questionDuration = 15;
+        var questionSecElapsed = 0;
+        var questionInterval;
+
+        // draw instruction
+        init();
+
+        // var startButton = document.querySelector("#startQuiz");
+
+        // function to display instructions
+        function init() {
+            clearDetails();
+            reset();
+            // creates Heading element for main page
+            let heading = document.createElement("p");
+            heading.setAttribute("id", "main-heading");
+            heading.textContent = "This game gives you the opportunity to take a time quiz!";
+
+            // creates elements with the instructions for the game
+            let instructions = document.createElement("p");
+            instructions.setAttribute("id", "instructions");
+            instructions.textContent = " You will have 5 seconds to answer each question. If you answer correctly you will score points. The quicker you answer the more points you will score. If you score incorrectly you will not lose points, but you will be penalized time.";
+
+            // adding more question - this should move into loop or function
+            // creates button to start the game
+            let startJsQuiz = document.createElement("button");
+            startJsQuiz.setAttribute("id", "startJSQuiz");
+            startJsQuiz.setAttribute("class", "btn btn-secondary");
+            startJsQuiz.textContent = "Start Javascript Quiz";
+
+
+
+            mainEl.appendChild(heading);
+            mainEl.appendChild(instructions);
+            mainEl.appendChild(startJsQuiz);
+
+
+            startJsQuiz.addEventListener("click", function() {
+                quizType = "Java Script";
+                playQuiz(jsQuestions);
+            });
+
+
+        }
+
+        // function to clear details element of all children
+        function clearDetails() {
+            mainEl.innerHTML = "";
+        }
+
+        function reset() {
+            quizType = "";
+            score = 0;
+
+            gameDuration = 0;
+            gameSecElapsed = 0;
+            gameInterval;
+
+            questionDuration = 15;
+            questionSecElapsed = 0;
+            questionInterval;
+        }
+
+        //start game
+        function playQuiz(questionSet) {
+            if (test) {
+                console.log("--- playQuiz ---");
+            }
+            // select quiz randomize questions
+
+            quiz = setUpQuestions(questionSet);
+
+            // displays timers
+            timerTab.setAttribute("style", "visibility: visible;");
+
+            // Start timers here
+            gameDuration = quiz.length * 15;
+            if (test) {
+                console.log("duration g,q:", gameDuration, questionDuration);
+            }
+
+            startGameTimer();
+            renderTime();
+
+            //go to first question
+            presentQuestion();
+        }
+
+        // function to get random question out of array
+        function setUpQuestions(arr) {
+            if (test) {
+                console.log("--- setUpQuestions ---");
+            }
+
+            let ranQuest = [];
+
+            for (let i = 0; i < arr.length; i++) {
+                ranQuest.push(arr[i]);
+            }
+            return ranQuest;
+        }
+
+        // function to redraw screen with  question 
+        function presentQuestion() {
+            if (test) {
+                console.log("--- presentQuestion ---");
+            }
+            // if (test) {console.log("cur.choices[i] " + cur.choices);}
+
+            //reset time allows to answer question
+            questionSecElapsed = 0;
+
+            // checks for no more questions and exits
+            if (quiz.length === 0) {
+                endOfGame();
+                return;
+            }
+
+            // call question timer here
+            // reduceQUiz global
+
+            //sets current object (cur - question) by pulling out of reducedQuiz array leaving the remaining quetions in the array
+            curQuestion = quiz.pop();
+
+            //clears html to draw questions
+            clearDetails();
+
+            // add question to screen
+            //build out display for new item
+            let question = document.createElement("h1");
+            // adds data value
+            question.setAttribute("question", curQuestion.title);
+            question.textContent = curQuestion.title;
+            mainEl.appendChild(question)
+
+            // create list as container to listen for answers
+            let choiceBox = document.createElement("ul");
+            choiceBox.setAttribute("id", "choiceBox");
+            mainEl.appendChild(choiceBox);
+
+            //adds answers to screen
+            for (let i = 0; i < curQuestion.choices.length; i++) {
+                // creates variable for each choice item
+                let listChoice = document.createElement("li");
+                // adds data value
+                listChoice.setAttribute("choice-value", curQuestion.choices[i]);
+                listChoice.setAttribute("id", "questionNum-" + i);
+                listChoice.textContent = curQuestion.choices[i];
+                //add choice to page
+                choiceBox.appendChild(listChoice)
+            }
+
+            if (test) {
+                console.log("cur", curQuestion);
+            }
+
+            // get answer from user
+            // using the anymous function delays the invocation of the scoreAnswer
+            choiceBox.addEventListener("click", function() {
+                scoreAnswer(curQuestion);
+            });
+            // calls for the next questions
+        }
+
+        function scoreAnswer(cur) {
+            if (test) {
+                console.log("--- scoreAnswer ---");
+            }
+            // ensure that the event on the li
+            var e = event.target;
+            if (e.matches("li")) {
+                let selectedItem = e.textContent;
+                // if (test) { console.log("check quiz " + quiz.length); }
+                if (test) {
+                    console.log("selectedItem quiz " + selectedItem);
+                }
+                // if (test) { console.log("selectedItem cur " , cur.answer); }
+                if (selectedItem === cur.answer) {
+                    // if (test) { console.log("correct answer");}
+                    score += questionDuration - questionSecElapsed;
+                    //TODO music 
+                } else {
+                    if (test) {
+                        console.log("wrong answer");
+                    }
+                    //penelty for being wrong
+                    gameDuration -= 10;
+                }
+                if (test) {
+                    console.log("sselected ", selectedItem);
+                }
+                showAnswers(cur);
+                // presentQuestion();
+            }
+        }
+
+        // TODO incomplete does not disply the correct color!!!! arghh
+        function showAnswers(cur) {
+            if (test) {
+                console.log("--- showAnswer ---");
+            }
+            // if (test) { console.log("sa length",cur.choices.length);}
+            if (test) {
+                console.log("sa qanda", cur);
+            }
+            if (test) {
+                console.log("sselected ", selectedItem);
+            }
+
+
+            for (let i = 0; i < cur.choices.length; i++) {
+                if (test) {
+                    console.log("sa in for ", i);
+                }
+
+                let questid = "#questionNum-" + i;
+                // if (test) { console.log("sa qn", questid );}
+                let questrow = document.querySelector(questid);
+
+                // if (test) { console.log("questrow",questrow);}
+
+                if (test) {
+                    console.log("saf selected" + selectedItem + "<");
+                }
+                if (test) {
+                    console.log("saf color test >" + cur.choices[i] + "<");
+                }
+
+                if (cur.choices[i] !== cur.answer) {
+                    if (test) {
+                        console.log("color test flase");
+                    }
+                    questrow.setAttribute("style", "background-color: red");
+                } else {
+                    if (test) {
+                        console.log("color test true");
+                    }
+                    questrow.setAttribute("style", "background-color: green");
+                }
+            }
+            // pause so user can see results
+            setTimeout(presentQuestion, 500);
+        }
+
+        // function to set time for game timer
+        function setGameTime() {
+            if (test) {
+                console.log("--- setGameTime ---");
+            }
+            if (test) {
+                console.log("gameDuration " + gameDuration);
+            }
+            clearInterval(gameInterval);
+            gameSeconds = gameDuration;
+        }
+
+
+        function renderTime() {
+            // if (test) { console.log(" --- renderTime --- "); }
+            // if (test) { console.log("gameSecElapsed " + gameSecElapsed); }
+            // if (test) { console.log("gameDuration " + gameDuration); }
+            // if (test) { console.log("questionDuration " + questionDuration); }
+
+            gameTimerEl.textContent = gameDuration - gameSecElapsed;
+            quesTimerEl.textContent = questionDuration - questionSecElapsed;
+
+            if ((questionDuration - questionSecElapsed) < 1) {
+                // game penelty for letting timer run out
+                gameDuration -= 10;
+                if (test) {
+                    console.log("too slow");
+                }
+                presentQuestion();
+            }
+
+            if ((gameDuration - gameSecElapsed) < 1) {
+                endOfGame();
+            }
+        }
+
+        function startGameTimer() {
+            if (test) {
+                console.log("--- startGameTimer ---");
+            }
+            setGameTime();
+
+            gameInterval = setInterval(function() {
+                gameSecElapsed++;
+                questionSecElapsed++;
+                renderTime();
+            }, 1000);
+        }
+
+        function stopTime() {
+            if (test) {
+                console.log("--- stopTime --- ");
+            }
+            gameSeconds = 0;
+            questionSeconds = 0;
+            clearInterval(gameInterval);
+        }
+
+        // function of end of game
+        function endOfGame() {
+            if (test) {
+                console.log("--- endOfGame ---");
+            }
+            stopTime();
+            clearDetails();
+
+            timerTab.setAttribute("style", "visibility: hidden;");
+
+            let heading = document.createElement("p");
+            heading.setAttribute("id", "main-heading");
+            heading.textContent = "GAME OVER - I hope you have enjoyed this";
+
+            // creates elements with the instructions for the game
+            let instructions = document.createElement("p");
+            instructions.setAttribute("id", "instructions");
+            instructions.textContent = " Your score is " + score;
+
+            // creates button to start the game
+            let playAgain = document.createElement("button");
+            playAgain.setAttribute("id", "playAgain");
+            playAgain.setAttribute("class", "btn btn-secondary");
+            playAgain.textContent = "Play again";
+
+            // creates input for user to add initials
+            let par = document.createElement("p");
+
+            let initialsLabel = document.createElement("label");
+            initialsLabel.setAttribute("for", "userInitials");
+            initialsLabel.textContent = "Enter Initials: ";
+
+            let initialsInput = document.createElement("input");
+            initialsInput.setAttribute("id", "userInitials");
+            initialsInput.setAttribute("name", "userInitials");
+            initialsInput.setAttribute("minlength", "3");
+            initialsInput.setAttribute("maxlength", "3");
+            initialsInput.setAttribute("size", "3");
+
+
+            mainEl.appendChild(heading);
+            mainEl.appendChild(instructions);
+            mainEl.appendChild(initialsLabel);
+            mainEl.appendChild(initialsInput);
+            mainEl.appendChild(par);
+            mainEl.appendChild(playAgain);
+
+            playAgain.addEventListener("click", init);
+
+            initialsInput.addEventListener("input", function() {
+                initialsInput.value = initialsInput.value.toUpperCase();
+                if (initialsInput.value.length === 3) {
+
+                    //create object for this score
+                    let thisScore = [{
+                        type: quizType,
+                        name: initialsInput.value,
+                        score: score
+                    }];
+
+                    //get highscores from memory
+                    let storedScores = JSON.parse(localStorage.getItem("highScores"));
+                    if (test) {
+                        console.log("storedScore", storedScores);
+                    }
+
+                    if (storedScores !== null) {
+                        storedScores.push(thisScore[0]);
+                    } else {
+                        storedScores = thisScore;
+                    }
+
+                    localStorage.setItem("highScores", JSON.stringify(storedScores));
+                    highScores();
+                }
+            });
+        }
+
+        function highScores() {
+            stopTime();
+            clearDetails();
+
+            timerTab.setAttribute("style", "visibility: hidden;");
+
+            //get scores from storage
+            let storedScores = JSON.parse(localStorage.getItem("highScores"));
+
+            // draw heading
+            let heading = document.createElement("h2");
+            heading.setAttribute("id", "main-heading");
+            heading.textContent = "Top 5 High Score Hall of Fame";
+
+            mainEl.appendChild(heading);
+
+            // Render a new li for each score
+            // TODO check for this error 
+            if (storedScores !== null) {
+                // sort scores
+                storedScores.sort((a, b) => (a.score < b.score) ? 1 : -1);
+
+                // sets the number of scores to display to 5 or the number of games played. Which ever is less
+                let numScores2Display = 5;
+                if (storedScores.length < 5) {
+                    numScores2Display = storedScores.length;
+                }
+
+                for (var i = 0; i < numScores2Display; i++) {
+                    var s = storedScores[i];
+
+                    var p = document.createElement("p");
+                    p.textContent = s.name + " " + s.score + " ( " + s.type + " )";
+                    mainEl.appendChild(p);
+                }
+            } else {
+                var p = document.createElement("p");
+                p.textContent = "Your Initials Here!"
+                mainEl.appendChild(p);
+            }
+
+
+            // creates button to start the game
+            let playAgain = document.createElement("button");
+            playAgain.setAttribute("id", "playAgain");
+            playAgain.setAttribute("class", "btn btn-secondary");
+            playAgain.textContent = "Play!";
+
+            mainEl.appendChild(playAgain);
+
+            playAgain.addEventListener("click", init);
+        }
+
+        highscoreDiv.addEventListener("click", highScores);
+    </script>
+</body>
+
+</html>
